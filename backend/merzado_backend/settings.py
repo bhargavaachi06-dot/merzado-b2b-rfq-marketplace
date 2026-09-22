@@ -26,6 +26,11 @@ DEBUG = os.getenv('DEBUG', 'True') == 'True'
 allowed_hosts_env = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1')
 ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_env.split(',') if h.strip()]
 
+# Automatically include Render external hostname if running on Render
+RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME and RENDER_EXTERNAL_HOSTNAME not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -50,6 +55,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # Must be as high as possible
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -82,43 +88,57 @@ WSGI_APPLICATION = 'merzado_backend.wsgi.application'
 AUTH_USER_MODEL = 'accounts.User'
 
 # Database Configuration
-# Supports both DB_* and DATABASE_* environment variable conventions
-DB_ENGINE = os.getenv('DATABASE_ENGINE') or os.getenv('DB_ENGINE', 'django.db.backends.postgresql')
-DB_NAME = os.getenv('DATABASE_NAME') or os.getenv('DB_NAME', 'merzado_db')
-DB_USER = os.getenv('DATABASE_USER') or os.getenv('DB_USER', 'postgres')
-DB_PASSWORD = os.getenv('DATABASE_PASSWORD') or os.getenv('DB_PASSWORD', 'postgres')
-DB_HOST = os.getenv('DATABASE_HOST') or os.getenv('DB_HOST', 'localhost')
-DB_PORT = os.getenv('DATABASE_PORT') or os.getenv('DB_PORT', '5432')
+# Primary: DATABASE_URL (Render PostgreSQL / Cloud Database)
+# Secondary: DB_* or DATABASE_* individual variables
+# Fallback: Local SQLite if PostgreSQL service is unavailable locally
+DATABASE_URL = os.getenv('DATABASE_URL')
 
-DATABASES = {
-    'default': {
-        'ENGINE': DB_ENGINE,
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
-    }
-}
-
-# Graceful fallback to SQLite if PostgreSQL service or credentials fail during local development
-if 'postgresql' in DB_ENGINE:
-    try:
-        import psycopg2
-        conn = psycopg2.connect(
-            dbname=DB_NAME,
-            user=DB_USER,
-            password=DB_PASSWORD,
-            host=DB_HOST,
-            port=DB_PORT,
-            connect_timeout=2
+if DATABASE_URL:
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
         )
-        conn.close()
-    except Exception:
-        DATABASES['default'] = {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+    }
+else:
+    DB_ENGINE = os.getenv('DATABASE_ENGINE') or os.getenv('DB_ENGINE', 'django.db.backends.postgresql')
+    DB_NAME = os.getenv('DATABASE_NAME') or os.getenv('DB_NAME', 'merzado_db')
+    DB_USER = os.getenv('DATABASE_USER') or os.getenv('DB_USER', 'postgres')
+    DB_PASSWORD = os.getenv('DATABASE_PASSWORD') or os.getenv('DB_PASSWORD', 'postgres')
+    DB_HOST = os.getenv('DATABASE_HOST') or os.getenv('DB_HOST', 'localhost')
+    DB_PORT = os.getenv('DATABASE_PORT') or os.getenv('DB_PORT', '5432')
+
+    DATABASES = {
+        'default': {
+            'ENGINE': DB_ENGINE,
+            'NAME': DB_NAME,
+            'USER': DB_USER,
+            'PASSWORD': DB_PASSWORD,
+            'HOST': DB_HOST,
+            'PORT': DB_PORT,
         }
+    }
+
+    # Graceful fallback to SQLite if PostgreSQL service or credentials fail during local development
+    if 'postgresql' in DB_ENGINE:
+        try:
+            import psycopg2
+            conn = psycopg2.connect(
+                dbname=DB_NAME,
+                user=DB_USER,
+                password=DB_PASSWORD,
+                host=DB_HOST,
+                port=DB_PORT,
+                connect_timeout=2
+            )
+            conn.close()
+        except Exception:
+            DATABASES['default'] = {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -145,6 +165,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -176,4 +197,7 @@ SIMPLE_JWT = {
 # CORS Configuration
 cors_origins_env = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173')
 CORS_ALLOWED_ORIGINS = [orig.strip() for orig in cors_origins_env.split(',') if orig.strip()]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+]
 CORS_ALLOW_CREDENTIALS = True
