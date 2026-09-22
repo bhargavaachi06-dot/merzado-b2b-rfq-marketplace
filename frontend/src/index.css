@@ -1,0 +1,545 @@
+/* ==========================================================================
+   MERZADO B2B RFQ Marketplace - Modern Professional SaaS Design System
+   ========================================================================== */
+
+/* Import Bootstrap & Bootstrap Icons */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+  /* Business Palette: Deep Blue / Indigo / Slate */
+  --primary-color: #1e40af;       /* Deep Business Blue */
+  --primary-hover: #1d4ed8;       /* Vibrant Blue Hover */
+  --primary-subtle: #eff6ff;      /* Ultra Soft Blue */
+  --primary-border: #bfdbfe;      /* Subtle Blue Border */
+  
+  --secondary-accent: #0284c7;    /* Slate/Cyan Accent */
+  --secondary-subtle: #f0f9ff;
+  
+  --success-color: #059669;       /* Emerald Green */
+  --success-hover: #047857;
+  --success-subtle: #ecfdf5;
+  --success-border: #a7f3d0;
+  
+  --warning-color: #d97706;       /* Amber Orange */
+  --warning-subtle: #fffbeb;
+  --warning-border: #fde68a;
+  
+  --danger-color: #dc2626;        /* Crimson Red */
+  --danger-subtle: #fef2f2;
+  --danger-border: #fecaca;
+  
+  --bg-surface: #f8fafc;          /* Very light neutral background */
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;         /* Slate 200 */
+  --card-border-hover: #cbd5e1;   /* Slate 300 */
+  
+  --text-main: #0f172a;           /* Dark Slate */
+  --text-secondary: #475569;      /* Medium Slate */
+  --text-muted: #64748b;          /* Light Slate */
+  
+  --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Shadows */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+  --shadow-sm: 0 1px 3px 0 rgb(15 23 42 / 0.06), 0 1px 2px -1px rgb(15 23 42 / 0.04);
+  --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.07), 0 2px 4px -2px rgb(15 23 42 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.08), 0 4px 6px -4px rgb(15 23 42 / 0.04);
+  --shadow-hover: 0 12px 20px -3px rgb(30 64 175 / 0.12), 0 4px 8px -2px rgb(30 64 175 / 0.06);
+}
+
+/* Base Body */
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Enhancements */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-main);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* Modern Brand Badge */
+.navbar-brand-badge {
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 4px rgba(30, 64, 175, 0.2);
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ==========================================================================
+   Navigation Bar
+   ========================================================================== */
+.custom-navbar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--card-border);
+  box-shadow: var(--shadow-sm);
+  padding: 0.65rem 0;
+  transition: all 0.2s ease;
+}
+
+.custom-navbar .nav-link {
+  color: var(--text-secondary);
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.85rem !important;
+  border-radius: 8px;
+  transition: all 0.15s ease-in-out;
+}
+
+.custom-navbar .nav-link:hover {
+  color: var(--primary-color);
+  background-color: var(--primary-subtle);
+}
+
+.custom-navbar .nav-link.active {
+  color: var(--primary-color);
+  background-color: var(--primary-subtle);
+  font-weight: 600;
+}
+
+.user-profile-pill {
+  background: #f1f5f9;
+  border: 1px solid var(--card-border);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.825rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ==========================================================================
+   Cards & Surfaces
+   ========================================================================== */
+.merzado-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+}
+
+.merzado-card-hover {
+  cursor: pointer;
+}
+
+.merzado-card-hover:hover {
+  transform: translateY(-3px);
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-hover);
+}
+
+/* Summary / Metric Cards */
+.stat-card {
+  background: #ffffff;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1.25rem 1.35rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 1.15rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.stat-icon.primary {
+  background: var(--primary-subtle);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-border);
+}
+
+.stat-icon.success {
+  background: var(--success-subtle);
+  color: var(--success-color);
+  border: 1px solid var(--success-border);
+}
+
+.stat-icon.warning {
+  background: var(--warning-subtle);
+  color: var(--warning-color);
+  border: 1px solid var(--warning-border);
+}
+
+.stat-icon.secondary {
+  background: var(--secondary-subtle);
+  color: var(--secondary-accent);
+  border: 1px solid #bae6fd;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.stat-subtext {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   Badges & Status Tags
+   ========================================================================== */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 6px;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.badge-open {
+  background-color: var(--success-subtle);
+  color: #047857;
+  border: 1px solid var(--success-border);
+}
+
+.badge-closed {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.badge-expired {
+  background-color: var(--warning-subtle);
+  color: #b45309;
+  border: 1px solid var(--warning-border);
+}
+
+.badge-buyer {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.badge-supplier {
+  background-color: #f5f3ff;
+  color: #6d28d9;
+  border: 1px solid #ddd6fe;
+}
+
+/* Pulsing dot for live open status */
+.status-dot-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #10b981;
+  display: inline-block;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: statusPulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes statusPulse {
+  to {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn {
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  transition: all 0.15s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #ffffff;
+  box-shadow: 0 1px 2px rgba(30, 64, 175, 0.15);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--primary-hover);
+  border-color: var(--primary-hover);
+  color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-border);
+  background-color: #ffffff;
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-subtle);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+.btn-light {
+  background-color: #f8fafc;
+  border-color: var(--card-border);
+  color: var(--text-secondary);
+}
+
+.btn-light:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   Forms & Inputs
+   ========================================================================== */
+.form-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #334155;
+  margin-bottom: 0.35rem;
+}
+
+.form-label .required-star {
+  color: var(--danger-color);
+  margin-left: 2px;
+}
+
+.form-control, .form-select {
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.925rem;
+  color: var(--text-main);
+  background-color: #ffffff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control::placeholder {
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.15);
+  outline: none;
+}
+
+/* ==========================================================================
+   Authentication Split Layout
+   ========================================================================== */
+.auth-wrapper {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.auth-split-card {
+  width: 100%;
+  max-width: 1020px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 992px) {
+  .auth-split-card {
+    flex-direction: row;
+    min-height: 580px;
+  }
+}
+
+.auth-hero-pane {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+  position: relative;
+  color: #ffffff;
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.auth-hero-pane::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/images/procurement-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.22;
+  mix-blend-mode: luminosity;
+  pointer-events: none;
+}
+
+.auth-hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.auth-form-pane {
+  background: #ffffff;
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Feature bullet list in auth pane */
+.auth-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.auth-feature-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1rem;
+  color: #93c5fd;
+}
+
+/* Role Selector Radio Cards in Register */
+.role-selection-card {
+  border: 2px solid var(--card-border);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  background: #ffffff;
+  transition: all 0.15s ease;
+  height: 100%;
+}
+
+.role-selection-card:hover {
+  border-color: #93c5fd;
+  background-color: #f8fafc;
+}
+
+.role-selection-card.selected {
+  border-color: var(--primary-color);
+  background-color: var(--primary-subtle);
+}
+
+/* ==========================================================================
+   RFQ Card Layout
+   ========================================================================== */
+.rfq-card-meta-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.35rem 0;
+  font-size: 0.85rem;
+}
+
+.rfq-card-meta-label {
+  color: var(--text-muted);
+}
+
+.rfq-card-meta-val {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* ==========================================================================
+   Quotations Cards & Comparison
+   ========================================================================== */
+.quote-highlight-box {
+  background: #f8fafc;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  text-align: center;
+}
+
+/* ==========================================================================
+   Subtle Animations & Page Transitions
+   ========================================================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-container {
+  animation: fadeInUp 0.22s ease-out;
+}
+
+/* Footer Styling */
+.custom-footer {
+  background: #ffffff;
+  border-top: 1px solid var(--card-border);
+  color: var(--text-muted);
+  font-size: 0.825rem;
+}
